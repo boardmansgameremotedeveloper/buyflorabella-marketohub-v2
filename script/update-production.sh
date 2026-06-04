@@ -240,9 +240,15 @@ fi
 log_phase "PHASE 2: Code Update"
 
 if $_SSH_OK; then
-  log_info "Pulling latest main (fast-forward after Phase 0 merge)..."
-  git pull origin main
-  log_success "Code updated from origin"
+  if git ls-remote --exit-code origin main >/dev/null 2>&1; then
+    log_info "Pulling latest main (fast-forward after Phase 0 merge)..."
+    git pull origin main
+    log_success "Code updated from origin"
+  else
+    log_info "origin/main does not exist yet — pushing for the first time..."
+    git push -u origin main
+    log_success "main pushed to origin"
+  fi
 else
   log_info "SSH unavailable — code already at latest (Phase 0 merged dev into main locally)"
   log_success "Code is current (local-only mode)"
