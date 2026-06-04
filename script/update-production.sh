@@ -87,7 +87,7 @@ log_phase "PHASE 0: Merge dev → main"
 
 log_info "Checking SSH access to origin..."
 _SSH_OK=false
-if ssh -T git@github.com >/dev/null 2>&1; then
+if ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
   _SSH_OK=true
   log_success "SSH authentication OK"
 else
