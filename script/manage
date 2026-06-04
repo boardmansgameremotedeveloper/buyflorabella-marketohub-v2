@@ -47,7 +47,7 @@ case "$1" in
     echo "  ./script/manage --deploy-frontend   Build and deploy React frontend"
     echo "  ./script/manage --deploy-backend    Install systemd service and restart"
     echo ""
-    echo "  ./script/manage --release-candidate Create tagged release candidate for bitbucket"
+    echo "  ./script/manage --release-candidate Create tagged release candidate for GitHub"
     echo "  ./script/manage --auto-deploy       Full workflow: tag → merge → deploy"
     echo ""
     echo "  ./script/manage --kill [dev|prod]   Kill orphaned backend/frontend processes on managed ports

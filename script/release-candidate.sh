@@ -7,7 +7,7 @@ set -e
 # Phases:
 #   1. Commit any pending changes (interactive — stages and commits everything)
 #   2. Pull main → dev (merge any changes made directly to main)
-#   3. Bump version, tag, and push to Bitbucket
+#   3. Bump version, tag, and push to GitHub
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
@@ -226,19 +226,19 @@ log_info "Current version : ${CURRENT_VERSION}"
 log_info "Release version : ${NEW_VERSION}"
 echo ""
 
-if ! confirm "Create release candidate ${NEW_VERSION} and push to Bitbucket?"; then
+if ! confirm "Create release candidate ${NEW_VERSION} and push to GitHub?"; then
   log_info "Cancelled."
   exit 0
 fi
 
 echo ""
-log_info "Checking SSH access to Bitbucket..."
+log_info "Checking SSH access to GitHub..."
 _SSH_OK=false
-if ssh -T git@bitbucket.org >/dev/null 2>&1; then
+if ssh -T git@github.com >/dev/null 2>&1; then
   _SSH_OK=true
   log_success "SSH authentication OK"
 else
-  log_warn "SSH to Bitbucket unavailable — version will be bumped and committed locally."
+  log_warn "SSH to GitHub unavailable — version will be bumped and committed locally."
   log_warn "Push to origin will be skipped. Run 'git push origin dev' when SSH is restored."
 fi
 echo ""
@@ -296,7 +296,7 @@ if $_SSH_OK; then
   fi
 
   # Push branch + tag
-  log_info "Pushing dev branch and tag to Bitbucket..."
+  log_info "Pushing dev branch and tag to GitHub..."
   git push origin dev
   git push origin "${NEW_VERSION}"
   log_success "Pushed to origin"

@@ -5,7 +5,7 @@ set -e
 # Runs in prod/ worktree only
 #
 # Phases:
-#   0. Merge dev → main  (replaces the manual Bitbucket PR step)
+#   0. Merge dev → main  (replaces the manual GitHub PR step)
 #   1. Pre-update validation
 #   2. Code update + test
 #   3. Install frontend + restart backend
@@ -87,11 +87,11 @@ log_phase "PHASE 0: Merge dev → main"
 
 log_info "Checking SSH access to origin..."
 _SSH_OK=false
-if ssh -T git@bitbucket.org >/dev/null 2>&1; then
+if ssh -T git@github.com >/dev/null 2>&1; then
   _SSH_OK=true
   log_success "SSH authentication OK"
 else
-  log_warn "SSH to Bitbucket unavailable — running in local-only mode."
+  log_warn "SSH to GitHub unavailable — running in local-only mode."
   log_warn "Remote fetch/push will be skipped; deploy will proceed from local branches."
 fi
 echo ""

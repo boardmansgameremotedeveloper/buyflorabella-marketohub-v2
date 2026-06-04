@@ -5,7 +5,7 @@ set -e
 # Runs in prod/ worktree only
 #
 # Phases:
-#   0. Merge dev → main  (replaces the manual Bitbucket PR step)
+#   0. Merge dev → main  (replaces the manual GitHub PR step)
 #   1. Pre-update validation
 #   2. Code update + test
 #   3. Install frontend + restart backend
