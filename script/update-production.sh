@@ -85,13 +85,15 @@ log_success "Working directory is clean"
 
 log_phase "PHASE 0: Merge dev → main"
 
-log_info "Checking SSH access to origin..."
+log_info "Checking push access to origin..."
 _SSH_OK=false
-if ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
+_GIT_CHECK=$(git ls-remote origin HEAD 2>&1)
+if echo "$_GIT_CHECK" | grep -qE "^[0-9a-f]{40}"; then
   _SSH_OK=true
-  log_success "SSH authentication OK"
+  log_success "Push access to origin confirmed"
 else
-  log_warn "SSH to GitHub unavailable — running in local-only mode."
+  log_warn "Cannot reach origin: ${_GIT_CHECK}"
+  log_warn "Running in local-only mode."
   log_warn "Remote fetch/push will be skipped; deploy will proceed from local branches."
 fi
 echo ""

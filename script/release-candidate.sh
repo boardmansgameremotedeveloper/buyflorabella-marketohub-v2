@@ -233,14 +233,15 @@ if ! confirm "Create release candidate ${NEW_VERSION} and push to GitHub?"; then
 fi
 
 echo ""
-log_info "Checking SSH access to GitHub..."
+log_info "Checking push access to origin..."
 _SSH_OK=false
-if ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
+_GIT_CHECK=$(git ls-remote origin HEAD 2>&1)
+if echo "$_GIT_CHECK" | grep -qE "^[0-9a-f]{40}"; then
   _SSH_OK=true
-  log_success "SSH authentication OK"
+  log_success "Push access to origin confirmed"
 else
-  log_warn "SSH to GitHub unavailable — version will be bumped and committed locally."
-  log_warn "Push to origin will be skipped. Run 'git push origin dev' when SSH is restored."
+  log_warn "Cannot reach origin: ${_GIT_CHECK}"
+  log_warn "Push will be skipped. Run 'git push origin dev' manually when access is restored."
 fi
 echo ""
 
