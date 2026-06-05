@@ -16,6 +16,7 @@ export default function HomePage() {
   return (
     <>
       <AnnouncementBar />
+      <ProductPdfButtons />
       <HeroSection />
       <ReassuranceStrip />
       <BenefitsGrid />
@@ -23,7 +24,6 @@ export default function HomePage() {
       <MineralComposition />
       <SocialProof />
       <EducationSection />
-      <ProductPdfButtons />
       <VideoReelsIframe />
       <CommunityCallout />
     </>
