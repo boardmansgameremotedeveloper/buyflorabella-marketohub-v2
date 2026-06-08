@@ -14,3 +14,4 @@ miniOxygen uses vite@6.2 instead of vite@6.4
 
 ------------
 
+Make two changes
