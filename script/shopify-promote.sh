@@ -92,19 +92,24 @@ log_info "Rsyncing frontend/ contents into main/ worktree..."
 log_info "(excludes: node_modules, .env files, build artifacts)"
 echo ""
 
-rsync -a --delete --omit-dir-times \
-  --exclude='.git' \
+# ── Safety checks ─────────────────────────────
+[[ -d "$FRONTEND_SRC" ]] || { echo "[ERROR] frontend/ not found"; exit 1; }
+[[ -d "$MAIN_WORKTREE" ]] || { echo "[ERROR] main worktree not found"; exit 1; }
+
+# ── Sync frontend → worktree ─────────────────────────────
+rsync -a --delete \
+  --exclude='.git/' \
   --exclude='node_modules/' \
-  --exclude='.env' \
   --exclude='.env.*' \
   --exclude='*.log' \
+  --exclude='.env*' \
+  --exclude='dist/' \
+  --exclude='build/' \
   --exclude='.cache/' \
-  --exclude='/build/' \
-  --exclude='/dist/' \
   --exclude='/.react-router/' \
-  --exclude='/.shopify/' \
-  --exclude='/script/' \
-  "${FRONTEND_SRC}/" "${MAIN_WORKTREE}/"
+  --exclude='.shopify/' \
+  --exclude='script/' \
+  "${FRONTEND_SRC%/}/" "${MAIN_WORKTREE%/}/"
 
 log_success "Rsync complete"
 echo ""
@@ -201,7 +206,8 @@ log_warn "  - All env vars configured in Oxygen dashboard"
 echo ""
 
 _SSH_OK=false
-_GIT_CHECK=$(git ls-remote origin HEAD 2>&1)
+#_GIT_CHECK=$(git ls-remote origin HEAD 2>&1)
+_GIT_CHECK=$(git ls-remote deploy HEAD 2>&1)
 if [[ $? -eq 0 ]]; then
   _SSH_OK=true
   log_success "Push access to origin confirmed"
@@ -212,19 +218,21 @@ fi
 if ! $_SSH_OK; then
   log_warn "SSH unavailable — commit is local only."
   log_info "To push when SSH is available:"
-  log_info "  cd ${MAIN_WORKTREE} && git push origin main"
+  #log_info "  cd ${MAIN_WORKTREE} && git push origin main"
+  log_info "  cd ${MAIN_WORKTREE} && git push deploy main"
   log_info "  git -C ${MAIN_WORKTREE} push ${DEPLOY_REMOTE} main"
   exit 0
 fi
 
 if ! confirm "Push main to GitHub? This triggers Oxygen deployment at buyflorabella.com."; then
   log_info "Push cancelled. Commit is local. Run when ready:"
-  log_info "  cd ${MAIN_WORKTREE} && git push origin main"
+  #log_info "  cd ${MAIN_WORKTREE} && git push origin main"
+  log_info "  cd ${MAIN_WORKTREE} && git push deploy main"
   log_info "  git -C ${MAIN_WORKTREE} push ${DEPLOY_REMOTE} main"
   exit 0
 fi
 
-git push origin main
+git push deploy main
 log_success "Pushed origin/main (buyflorabella)"
 log_success "Oxygen deployment should now be triggered"
 
