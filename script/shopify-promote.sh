@@ -157,11 +157,11 @@ log_phase "PHASE 3: Commit to main branch"
 
 cd "${MAIN_WORKTREE}"
 
-if [[ -z $(git status --porcelain 2>/dev/null) ]]; then
-  log_warn "No changes detected in main/ — frontend/ is already in sync with main branch."
-  log_warn "Nothing to commit. Exiting."
-  exit 0
-fi
+#if [[ -z $(git status --porcelain 2>/dev/null) ]]; then
+#  log_warn "No changes detected in main/ — frontend/ is already in sync with main branch."
+#  log_warn "Nothing to commit. Exiting."
+#  exit 0
+#fi
 
 log_info "Changes staged for commit:"
 git status --short | head -30
