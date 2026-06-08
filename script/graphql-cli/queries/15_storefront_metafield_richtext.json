@@ -1,8 +1,0 @@
-{
-  "name": "Storefront - Metafield: product_overview_richtext",
-  "description": "Query the rich text product_overview_richtext metafield only (returns JSON)",
-  "api": "storefront",
-  "variables": {
-    "handle": "5lb-bag"
-  }
-}
