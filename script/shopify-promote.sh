@@ -189,7 +189,9 @@ echo ""
 
 log_phase "PHASE 4: Push to GitHub"
 
-DEPLOY_REMOTE="git@github.com:boardmansgameremotedeveloper/buyflorabella-marketohub-v2.git"
+#DEPLOY_REMOTE="git@github.com:boardmansgameremotedeveloper/buyflorabella-marketohub-v2.git"
+# Oxygen deploys from origin
+# No secondary mirror repository required.
 
 log_warn "Pushing main to both repos will trigger the Oxygen deployment workflow."
 log_warn "Ensure Shopify Admin has been configured (Block 5 in task6_plan.md):"
@@ -224,8 +226,10 @@ fi
 
 git push origin main
 log_success "Pushed origin/main (buyflorabella)"
+log_success "Oxygen deployment should now be triggered"
 
-git push "${DEPLOY_REMOTE}" main
-log_success "Pushed to boardmansgameremotedeveloper — Oxygen deployment triggered"
+#git push "${DEPLOY_REMOTE}" main
+#log_success "Pushed to boardmansgameremotedeveloper — Oxygen deployment triggered"
 echo ""
+
 log_info "Monitor deployment: GitHub → boardmansgameremotedeveloper/buyflorabella-marketohub-v2 → Actions tab"
